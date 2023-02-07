@@ -10,7 +10,7 @@ export const register = async (req, res) => {
     res.status(200).json({ success: true, message: '' })
   } catch (error) {
     if (error.name === 'ValidationError') {
-      res.status(400).json({ success: false, message: error.errors[Object.keys(error.errors)[0]] })
+      res.status(400).json({ success: false, message: error.errors[Object.keys(error.errors)[0]].message })
     } else if (error.name === 'MongoServerError' && error.code === 11000) {
       res.status(400).json({ success: false, message: '帳號重複' })
     } else {
