@@ -26,7 +26,7 @@ const schema = new Schema({
     type: String,
     required: [true, '缺少分類'],
     enum: {
-      values: ['台北', '台中', '台南', '高雄'],
+      values: ['台北市', '新北市', '新竹市', '台中市', '雲林縣', '台中市'],
       message: '分類錯誤'
     }
   }
