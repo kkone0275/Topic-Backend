@@ -23,7 +23,8 @@ const upload = multer({
 })
 
 export default (req, res, next) => {
-  upload.fields([{ name: 'image', maxCount: 1 }, { name: 'images', maxCount: 10 }])(req, res, error => {
+  // { name: 'image', maxCount: 1 },
+  upload.fields([{ name: 'images', maxCount: 10 }])(req, res, error => {
     if (error instanceof multer.MulterError) {
       let message = '上傳錯誤'
       if (error.code === 'LIMIT_FILE_SIZE') {

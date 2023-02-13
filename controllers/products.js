@@ -18,6 +18,7 @@ export const createProduct = async (req, res) => {
       sell: req.body.sell,
       category: req.body.category
     })
+    console.log(result)
     res.status(200).json({ success: true, message: '', result })
   } catch (error) {
     console.log(error)
