@@ -3,16 +3,24 @@ import products from '../models/products.js'
 // 新增商品
 export const createProduct = async (req, res) => {
   try {
+    const imagePath = []
+    if (req.files.images) {
+      req.files.images.forEach((item) => {
+        imagePath.push(item.path)
+      })
+    }
     const result = await products.create({
       name: req.body.name,
       price: req.body.price,
       description: req.body.description,
-      image: req.file?.path || '',
+      image: req?.files.image[0].path || '',
+      images: [...imagePath],
       sell: req.body.sell,
       category: req.body.category
     })
     res.status(200).json({ success: true, message: '', result })
   } catch (error) {
+    console.log(error)
     if (error.name === 'ValidationError') {
       res.status(400).json({ success: false, message: error.errors[Object.keys(error.errors)[0]].message })
     } else {
