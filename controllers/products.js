@@ -1,28 +1,17 @@
 import products from '../models/products.js'
-
-// 新增商品
 export const createProduct = async (req, res) => {
   try {
-    const imagePath = []
-    if (req.files.images) {
-      req.files.images.forEach((item) => {
-        imagePath.push(item.path)
-      })
-    }
     const result = await products.create({
       name: req.body.name,
       price: req.body.price,
       description: req.body.description,
-      image: req?.files.image[0].path || '',
-      // image: req.file?.path || '',
-      images: [...imagePath],
+      image: req.file?.path || '',
       sell: req.body.sell,
-      category: req.body.category
+      category: req.body.category,
+      volume: req.body.volume
     })
-    console.log(result)
     res.status(200).json({ success: true, message: '', result })
   } catch (error) {
-    console.log(error)
     if (error.name === 'ValidationError') {
       res.status(400).json({ success: false, message: error.errors[Object.keys(error.errors)[0]].message })
     } else {
@@ -30,8 +19,7 @@ export const createProduct = async (req, res) => {
     }
   }
 }
-
-// 取上架商品，找 sell 為 true 值的商品
+// 前台看到的
 export const getSellProducts = async (req, res) => {
   try {
     const result = await products.find({ sell: true })
@@ -40,8 +28,7 @@ export const getSellProducts = async (req, res) => {
     res.status(500).json({ success: false, message: '未知錯誤' })
   }
 }
-
-// 取所有的商品，管理員專用
+// 只有管理員看得到全部的
 export const getAllProducts = async (req, res) => {
   try {
     const result = await products.find()
@@ -50,8 +37,7 @@ export const getAllProducts = async (req, res) => {
     res.status(500).json({ success: false, message: '未知錯誤' })
   }
 }
-
-// 取單個商品，查id
+// 查單個
 export const getProduct = async (req, res) => {
   try {
     const result = await products.findById(req.params.id)
@@ -61,15 +47,14 @@ export const getProduct = async (req, res) => {
       res.status(200).json({ success: true, message: '', result })
     }
   } catch (error) {
-    if (error.name === 'CastError') { // id 錯誤
+    if (error.name === 'CastError') {
       res.status(404).json({ success: false, message: '找不到' })
     } else {
       res.status(500).json({ success: false, message: '未知錯誤' })
     }
   }
 }
-
-// 編輯商品
+// 改
 export const editProduct = async (req, res) => {
   try {
     const result = await products.findByIdAndUpdate(req.params.id, {
@@ -78,8 +63,9 @@ export const editProduct = async (req, res) => {
       description: req.body.description,
       image: req.file?.path,
       sell: req.body.sell,
-      category: req.body.category
-    }, { new: true }) // upsert 當更新找不到時，建立一筆新的商品 (可加在 true, 後面)
+      category: req.body.category,
+      volume: req.body.volume
+    }, { new: true })
     if (!result) {
       res.status(404).json({ success: false, message: '找不到' })
     } else {

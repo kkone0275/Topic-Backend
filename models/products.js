@@ -14,14 +14,14 @@ const schema = new Schema({
     type: String,
     required: [true, '缺少說明']
   },
-  // image: {
-  //   type: String,
-  //   required: [true, '缺少圖片']
-  // },
-  images: {
-    type: [String],
-    default: []
+  image: {
+    type: String,
+    required: [true, '缺少圖片']
   },
+  // images: {
+  //   type: [String],
+  //   default: []
+  // },
   sell: {
     type: Boolean,
     required: [true, '缺少狀態']
