@@ -33,7 +33,7 @@ export const login = async (req, res) => {
         token,
         account: req.user.account,
         email: req.user.email,
-        cart: req.user.cart.length,
+        cart: req.user.cart.reduce((total, current) => total + current.quantity, 0),
         role: req.user.role
       }
     })
@@ -72,7 +72,7 @@ export const getUser = (req, res) => {
       result: {
         account: req.user.account,
         email: req.user.email,
-        cart: req.user.cart.length,
+        cart: req.user.cart.reduce((total, current) => total + current.quantity, 0),
         role: req.user.role
       }
     })
