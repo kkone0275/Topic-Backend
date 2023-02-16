@@ -18,6 +18,9 @@ const schema = new Schema({
     type: String,
     required: [true, '缺少圖片']
   },
+  images: {
+    type: [String]
+  },
   sell: {
     type: Boolean,
     required: [true, '缺少狀態']

@@ -1,11 +1,19 @@
 import products from '../models/products.js'
 export const createProduct = async (req, res) => {
   try {
+    const imagePath = []
+    if (req.files.images) {
+      req.files.images.forEach((item) => {
+        imagePath.push(item.path)
+      })
+    }
+
     const result = await products.create({
       name: req.body.name,
       price: req.body.price,
       description: req.body.description,
-      image: req.file?.path || '',
+      image: req?.files.image[0].path || '',
+      images: imagePath,
       sell: req.body.sell,
       category: req.body.category,
       volume: req.body.volume
@@ -57,11 +65,20 @@ export const getProduct = async (req, res) => {
 // 改
 export const editProduct = async (req, res) => {
   try {
+    const mainImage = req?.files?.image ? req?.files?.image[0].path : req.body.image
+    const imagePath = []
+
+    if (req.files.images) {
+      req.files.images.forEach((item) => {
+        imagePath.push(item.path)
+      })
+    }
     const result = await products.findByIdAndUpdate(req.params.id, {
       name: req.body.name,
       price: req.body.price,
       description: req.body.description,
-      image: req.file?.path,
+      image: mainImage,
+      images: imagePath,
       sell: req.body.sell,
       category: req.body.category,
       volume: req.body.volume
@@ -72,6 +89,7 @@ export const editProduct = async (req, res) => {
       res.status(200).json({ success: true, message: '', result })
     }
   } catch (error) {
+    console.log(error)
     if (error.name === 'ValidationError') {
       res.status(400).json({ success: false, message: error.errors[Object.keys(error.errors)[0]].message })
     } else if (error.name === 'CastError') {
