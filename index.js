@@ -38,6 +38,7 @@ app.use('/users', userRoute)
 app.use('/products', productRoute)
 app.use('/orders', orderRoute)
 
+// 固定回傳 200 部屬至 render
 app.get('/', (req, res) => {
   res.status(200).json({ success: true, message: '' })
 })
