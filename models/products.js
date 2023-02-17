@@ -1,4 +1,12 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model, ObjectId } from 'mongoose'
+
+// const userSchema = new Schema({
+//   u_id: {
+//     type: ObjectId,
+//     ref: 'users',
+//     required: [true, '缺少使用者']
+//   }
+// })
 
 const schema = new Schema({
   name: {
@@ -24,7 +32,7 @@ const schema = new Schema({
   },
   sell: {
     type: Boolean,
-    required: [true, '缺少狀態']
+    default: true
   },
   category: {
     type: String,
@@ -33,6 +41,10 @@ const schema = new Schema({
       values: ['台北市', '新北市', '新竹市', '台中市', '雲林縣', '台中市'],
       message: '分類錯誤'
     }
+  },
+  u_id: {
+    type: ObjectId,
+    ref: 'users'
   }
 }, { versionKey: false })
 

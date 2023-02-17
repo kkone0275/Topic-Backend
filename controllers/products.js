@@ -7,10 +7,11 @@ export const createProduct = async (req, res) => {
         imagePath.push(item.path)
       })
     }
-
+    console.log(req)
     const result = await products.create({
       name: req.body.name,
       price: req.body.price,
+      u_id: req.user._id,
       description: req.body.description,
       image: req?.files.image[0].path || '',
       images: imagePath,
@@ -49,6 +50,25 @@ export const getAllProducts = async (req, res) => {
 export const getProduct = async (req, res) => {
   try {
     const result = await products.findById(req.params.id)
+    if (!result) {
+      res.status(404).json({ success: false, message: '找不到' })
+    } else {
+      res.status(200).json({ success: true, message: '', result })
+    }
+  } catch (error) {
+    if (error.name === 'CastError') {
+      res.status(404).json({ success: false, message: '找不到' })
+    } else {
+      res.status(500).json({ success: false, message: '未知錯誤' })
+    }
+  }
+}
+// 查單個
+export const getUserProduct = async (req, res) => {
+  try {
+    console.log(req)
+    const result = await products.find({ u_id: req.user._id }).populate('u_id')
+
     if (!result) {
       res.status(404).json({ success: false, message: '找不到' })
     } else {
