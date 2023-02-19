@@ -1,20 +1,11 @@
-import products from '../models/products.js'
-export const createProduct = async (req, res) => {
+import times from '../models/times.js'
+export const createTime = async (req, res) => {
   try {
-    const imagePath = []
-    if (req.files.images) {
-      req.files.images.forEach((item) => {
-        imagePath.push(item.path)
-      })
-    }
     console.log(req)
-    const result = await products.create({
+    const result = await times.create({
       name: req.body.name,
-      price: req.body.price,
       u_id: req.user._id,
       description: req.body.description,
-      image: req?.files.image[0].path || '',
-      images: imagePath,
       sell: req.body.sell,
       category: req.body.category,
       volume: req.body.volume
@@ -29,27 +20,27 @@ export const createProduct = async (req, res) => {
   }
 }
 // 前台看到的
-export const getSellProducts = async (req, res) => {
+export const getSellTimes = async (req, res) => {
   try {
-    const result = await products.find({ sell: true })
+    const result = await times.find({ sell: true })
     res.status(200).json({ success: true, message: '', result })
   } catch (error) {
     res.status(500).json({ success: false, message: '未知錯誤' })
   }
 }
 // 只有管理員看得到全部的
-export const getAllProducts = async (req, res) => {
+export const getAllTimes = async (req, res) => {
   try {
-    const result = await products.find()
+    const result = await times.find()
     res.status(200).json({ success: true, message: '', result })
   } catch (error) {
     res.status(500).json({ success: false, message: '未知錯誤' })
   }
 }
 // 查單個
-export const getProduct = async (req, res) => {
+export const getTime = async (req, res) => {
   try {
-    const result = await products.findById(req.params.id)
+    const result = await times.findById(req.params.id)
     if (!result) {
       res.status(404).json({ success: false, message: '找不到' })
     } else {
@@ -64,9 +55,9 @@ export const getProduct = async (req, res) => {
   }
 }
 // 查使用者的
-export const getUserProduct = async (req, res) => {
+export const getUserTime = async (req, res) => {
   try {
-    const result = await products.find({ u_id: req.user._id }).populate('u_id')
+    const result = await times.find({ u_id: req.user._id }).populate('u_id')
     if (!result) {
       console.log('no')
       res.status(404).json({ success: false, message: '找不到' })
@@ -82,22 +73,11 @@ export const getUserProduct = async (req, res) => {
   }
 }
 // 改
-export const editProduct = async (req, res) => {
+export const editTime = async (req, res) => {
   try {
-    const mainImage = req?.files?.image ? req?.files?.image[0].path : req.body.image
-    const imagePath = []
-
-    if (req.files.images) {
-      req.files.images.forEach((item) => {
-        imagePath.push(item.path)
-      })
-    }
-    const result = await products.findByIdAndUpdate(req.params.id, {
+    const result = await times.findByIdAndUpdate(req.params.id, {
       name: req.body.name,
-      price: req.body.price,
       description: req.body.description,
-      image: mainImage,
-      images: imagePath,
       sell: req.body.sell,
       category: req.body.category,
       volume: req.body.volume

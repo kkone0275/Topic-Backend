@@ -4,6 +4,7 @@ import mongoose from 'mongoose'
 import cors from 'cors'
 import userRoute from './routes/users.js'
 import productRoute from './routes/products.js'
+import timeRoute from './routes/times.js'
 import orderRoute from './routes/orders.js'
 import './passport/passport.js'
 
@@ -36,9 +37,9 @@ app.use((_, req, res, next) => {
 
 app.use('/users', userRoute)
 app.use('/products', productRoute)
+app.use('/times', timeRoute)
 app.use('/orders', orderRoute)
 
-// 固定回傳 200 部屬至 render
 app.get('/', (req, res) => {
   res.status(200).json({ success: true, message: '' })
 })

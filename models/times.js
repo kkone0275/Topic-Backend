@@ -14,18 +14,6 @@ const schema = new Schema({
     type: String,
     required: [true, '缺少說明']
   },
-  image: {
-    type: String,
-    required: [true, '缺少圖片']
-  },
-  images: {
-    type: [String],
-    default: []
-  },
-  sell: {
-    type: Boolean,
-    default: true
-  },
   category: {
     type: String,
     required: [true, '缺少分類'],
@@ -40,4 +28,4 @@ const schema = new Schema({
   }
 }, { versionKey: false })
 
-export default model('products', schema)
+export default model('times', schema)
